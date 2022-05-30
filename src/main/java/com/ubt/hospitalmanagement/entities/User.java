@@ -1,55 +1,50 @@
 package com.ubt.hospitalmanagement.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private String userName;
+
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "uuid", updatable = false)
+    private String uuid;
+
+    private String email;
     private String password;
     private boolean active;
     private String roles;
 
-    public int getId() {
-        return id;
-    }
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "experiences", joinColumns = @JoinColumn(name = "doctor_id", nullable = false))
+    private List<String> experiences;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "diseases", joinColumns = @JoinColumn(name = "patient_id", nullable = false))
+    private List<String> diseases;
 
-    public String getUserName() {
-        return userName;
-    }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+    @OneToMany(fetch = FetchType.LAZY)
+    List<WorkTime> workingDays;
 
-    public String getPassword() {
-        return password;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public String getRoles() {
-        return roles;
-    }
-
-    public void setRoles(String roles) {
-        this.roles = roles;
-    }
 }
