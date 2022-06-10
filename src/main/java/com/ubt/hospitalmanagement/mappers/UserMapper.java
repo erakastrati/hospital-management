@@ -47,6 +47,8 @@ public class UserMapper {
                 .experiences(Optional.ofNullable(user.getExperiences()).orElse(null))
                 .active(user.isActive())
                 .workingDays(Optional.ofNullable(user.getWorkingDays()).map(WorkTimeMapper::map).orElse(null))
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
                 .build();
     }
 }

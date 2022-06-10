@@ -45,6 +45,8 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY)
     List<WorkTime> workingDays;
 
+    private String firstName;
+    private String lastName;
 
 
 }

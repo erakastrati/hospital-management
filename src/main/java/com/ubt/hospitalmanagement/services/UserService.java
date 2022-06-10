@@ -106,4 +106,19 @@ public class UserService {
                          .orElseThrow(EntityNotFoundException::new);
     }
 
+    public List<String> getCurrentPatientReports() {
+        User patient = getCurrentUserDetails();
+        return patient.getDiseases();
+    }
+
+    //update patient
+    public UserDto updateUser(String userUuid, UserDto userDto) {
+        User user = repository.findByUuid(userUuid).orElseThrow(EntityNotFoundException::new);
+        // update patient
+        user.setDiseases(userDto.getDiseases());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        return UserMapper.map(repository.save(user));
+    }
+
 }

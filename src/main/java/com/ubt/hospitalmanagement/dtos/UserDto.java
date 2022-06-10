@@ -19,4 +19,7 @@ public class UserDto {
     private List<String> diseases;
 
     List<WorkTimeDto> workingDays;
+
+    private String firstName;
+    private String lastName;
 }

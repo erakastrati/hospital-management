@@ -28,4 +28,15 @@ public class UserController {
         return ResponseEntity.ok(userService.getDoctors(pageable));
     }
 
+    @GetMapping("/reports")
+    public ResponseEntity<List<String>> getPatientHistory() {
+        return ResponseEntity.ok(userService.getCurrentPatientReports());
+    }
+
+    // ONLY ADMIN ROLE
+    @PutMapping("/{uuid}")
+    public ResponseEntity<?> updateUserFromAdmin(@PathVariable String uuid, @RequestBody UserDto userDto) {
+        return ResponseEntity.ok(userService.updateUser(uuid, userDto));
+    }
+
 }
