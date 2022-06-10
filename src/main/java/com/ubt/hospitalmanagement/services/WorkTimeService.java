@@ -22,6 +22,8 @@ public class WorkTimeService {
                             .day(request.getWeekDay())
                             .paradite(request.isParadite())
                             .pasdite(request.isPasdite())
+                            .pushim(request.isPushim())
+
                     .build())
             );
         }

@@ -1,6 +1,7 @@
 package com.ubt.hospitalmanagement.services;
 
 import com.ubt.hospitalmanagement.dtos.UserDto;
+import com.ubt.hospitalmanagement.entities.MyUserDetails;
 import com.ubt.hospitalmanagement.mappers.UserMapper;
 import com.ubt.hospitalmanagement.dtos.DisseaseDto;
 import com.ubt.hospitalmanagement.dtos.DoctorDto;
@@ -69,7 +70,7 @@ public class UserService {
         repository.save(doctor);
     }
     public User getCurrentUserDetails() {
-        org.springframework.security.core.userdetails.User principal = getCurrentUser();
+        MyUserDetails principal = getCurrentUser();
         User currentUser = null;
         if(principal != null) {
             Optional<User> optionalUser = repository.findByEmail(principal.getUsername());
@@ -78,9 +79,13 @@ public class UserService {
         }
         return currentUser;
     }
-    private org.springframework.security.core.userdetails.User getCurrentUser() {
+
+    public UserDto getCurrentUserDetailsAsDto() {
+        return UserMapper.map(getCurrentUserDetails());
+    }
+    private MyUserDetails getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+        MyUserDetails principal = (MyUserDetails) authentication.getPrincipal();
         return principal;
     }
 

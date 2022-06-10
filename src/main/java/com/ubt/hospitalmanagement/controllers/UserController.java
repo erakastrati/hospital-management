@@ -28,6 +28,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getDoctors(pageable));
     }
 
+    @GetMapping
+    public ResponseEntity<UserDto> getCurrentUserdetails() {
+        return ResponseEntity.ok(userService.getCurrentUserDetailsAsDto());
+    }
+
     @GetMapping("/reports")
     public ResponseEntity<List<String>> getPatientHistory() {
         return ResponseEntity.ok(userService.getCurrentPatientReports());
