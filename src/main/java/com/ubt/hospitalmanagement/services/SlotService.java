@@ -26,7 +26,7 @@ public class SlotService {
     private final AppointmentRepository appointmentRepository;
 
     public List<SlotDto> getAvailableSlotsPerDoctorAndDay(AvailableSlotsRequests requests) {
-        User doctor = userService.getDoctorByUUID(requests.getDoctorUuid());
+        User doctor = userService.getDoctorById(requests.getDoctorId());
         WorkTime workTime = workTimeService.getWorkTimeForDoctorAndWeekDay(doctor, requests.getDate().getDayOfWeek().name().toLowerCase());
         List<Slot> allSlots = new ArrayList<>();
         if(workTime.isParadite()) {
