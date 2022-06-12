@@ -37,7 +37,12 @@ public class UserService {
     private final AppointmentService appointmentService;
 
     public void createUser(SignUpRequest request)  {
-        createUser(User.builder().email(request.getEmail()).password(request.getPassword()).build());
+        createUser(User.builder()
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .active(true)
+                .roles(Roles.DOCTOR.name())
+                .build());
     }
 
     public void addDoctor(DoctorDto doctorDto) {
