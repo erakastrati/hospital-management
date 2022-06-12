@@ -10,6 +10,6 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 public class AvailableSlotsRequests {
-    private String doctorUuid;
+    private Long doctorId;
     private LocalDate date;
 }

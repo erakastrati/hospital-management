@@ -7,6 +7,6 @@ import lombok.Data;
 public class ReviewRequest {
 
     private String review;
-    private String doctorUuid;
+    private long doctorId;
 
 }

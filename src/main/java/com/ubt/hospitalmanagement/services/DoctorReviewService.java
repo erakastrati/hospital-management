@@ -16,7 +16,7 @@ public class DoctorReviewService {
     public void addReview(ReviewRequest request){
         DoctorReview review = new DoctorReview();
         review.setReview(request.getReview());
-        review.setDoctor(userService.getDoctorByUUID(request.getDoctorUuid()));
+        review.setDoctor(userService.getDoctorById(request.getDoctorId()));
         review.setPatient(userService.getCurrentUserDetails());
 
         repository.save(review);
