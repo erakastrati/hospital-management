@@ -1,4 +1,4 @@
-package com.ubt.hospitalmanagement.mappers;
+package com.ubt.hospitalmanagement.dtos.response.mappers;
 
 import com.ubt.hospitalmanagement.dtos.AppointmentDto;
 import com.ubt.hospitalmanagement.entities.Appointment;

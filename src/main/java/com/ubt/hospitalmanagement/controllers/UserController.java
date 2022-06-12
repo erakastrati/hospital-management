@@ -23,8 +23,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/schedule")
-    public void setDoctorSchedule(@RequestBody List<ScheduleRequest> request, @RequestParam String doctorUuid) {
-        userService.setDoctorWorkingDays(request, doctorUuid);
+    public void setDoctorSchedule(@RequestBody List<ScheduleRequest> request, @RequestParam Long id) {
+        userService.setDoctorWorkingDays(request, id);
     }
 
     @GetMapping("/doctors")

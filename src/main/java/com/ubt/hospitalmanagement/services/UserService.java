@@ -5,13 +5,12 @@ import com.ubt.hospitalmanagement.config.exceptions.UserNotFoundException;
 import com.ubt.hospitalmanagement.dtos.*;
 import com.ubt.hospitalmanagement.dtos.requests.AppointmentRequestDto;
 import com.ubt.hospitalmanagement.entities.MyUserDetails;
-import com.ubt.hospitalmanagement.mappers.UserMapper;
+import com.ubt.hospitalmanagement.dtos.response.mappers.UserMapper;
 import com.ubt.hospitalmanagement.dtos.requests.ScheduleRequest;
 import com.ubt.hospitalmanagement.dtos.requests.SignUpRequest;
 import com.ubt.hospitalmanagement.entities.User;
 import com.ubt.hospitalmanagement.entities.WorkTime;
 import com.ubt.hospitalmanagement.enums.Roles;
-import com.ubt.hospitalmanagement.repositories.AppointmentRepository;
 import com.ubt.hospitalmanagement.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -66,8 +65,8 @@ public class UserService {
         repository.save(user);
     }
 
-    public void setDoctorWorkingDays(List<ScheduleRequest> request, String doctorUuid) {
-        User doctor = getDoctorByUUID(doctorUuid);
+    public void setDoctorWorkingDays(List<ScheduleRequest> request, Long doctorId) {
+        User doctor = getDoctorById(doctorId);
         List<WorkTime> workTimes = workTimeService.saveWorkTimes(request, doctor);
 
         doctor.setWorkingDays(workTimes);
@@ -90,8 +89,8 @@ public class UserService {
         return user;
     }
 
-    public User getDoctorByUUID(String uuid) {
-        return repository.findByUuidAndRolesContaining(uuid, Roles.DOCTOR.name())
+    public User getDoctorById(Long id) {
+        return repository.findByIdAndRolesContaining(id, Roles.DOCTOR.name())
                 .orElseThrow(EntityNotFoundException::new);
     }
 

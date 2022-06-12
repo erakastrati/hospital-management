@@ -6,13 +6,12 @@ import com.ubt.hospitalmanagement.entities.Appointment;
 import com.ubt.hospitalmanagement.entities.Slot;
 import com.ubt.hospitalmanagement.entities.User;
 import com.ubt.hospitalmanagement.entities.WorkTime;
-import com.ubt.hospitalmanagement.mappers.SlotMapper;
+import com.ubt.hospitalmanagement.dtos.response.mappers.SlotMapper;
 import com.ubt.hospitalmanagement.repositories.AppointmentRepository;
 import com.ubt.hospitalmanagement.repositories.SlotRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
