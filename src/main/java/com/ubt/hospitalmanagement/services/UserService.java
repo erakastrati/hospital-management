@@ -1,16 +1,17 @@
 package com.ubt.hospitalmanagement.services;
 
-import com.ubt.hospitalmanagement.dtos.UserDto;
+import com.ubt.hospitalmanagement.config.exceptions.SlotNotValidException;
+import com.ubt.hospitalmanagement.config.exceptions.UserNotFoundException;
+import com.ubt.hospitalmanagement.dtos.*;
+import com.ubt.hospitalmanagement.dtos.requests.AppointmentRequestDto;
 import com.ubt.hospitalmanagement.entities.MyUserDetails;
 import com.ubt.hospitalmanagement.mappers.UserMapper;
-import com.ubt.hospitalmanagement.dtos.DisseaseDto;
-import com.ubt.hospitalmanagement.dtos.DoctorDto;
-import com.ubt.hospitalmanagement.dtos.PatientDto;
 import com.ubt.hospitalmanagement.dtos.requests.ScheduleRequest;
 import com.ubt.hospitalmanagement.dtos.requests.SignUpRequest;
 import com.ubt.hospitalmanagement.entities.User;
 import com.ubt.hospitalmanagement.entities.WorkTime;
 import com.ubt.hospitalmanagement.enums.Roles;
+import com.ubt.hospitalmanagement.repositories.AppointmentRepository;
 import com.ubt.hospitalmanagement.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -34,6 +35,8 @@ public class UserService {
 
     private final WorkTimeService workTimeService;
 
+    private final AppointmentService appointmentService;
+
     public void createUser(SignUpRequest request)  {
         createUser(User.builder().email(request.getEmail()).password(request.getPassword()).build());
     }
@@ -42,6 +45,7 @@ public class UserService {
         User doctor = UserMapper.map(doctorDto);
         createUser(doctor);
     }
+
 
 
     // TODO we need to update more properties
@@ -63,32 +67,12 @@ public class UserService {
     }
 
     public void setDoctorWorkingDays(List<ScheduleRequest> request, String doctorUuid) {
-        List<WorkTime> workTimes = workTimeService.saveWorkTimes(request);
-
         User doctor = getDoctorByUUID(doctorUuid);
+        List<WorkTime> workTimes = workTimeService.saveWorkTimes(request, doctor);
+
         doctor.setWorkingDays(workTimes);
         repository.save(doctor);
     }
-    public User getCurrentUserDetails() {
-        MyUserDetails principal = getCurrentUser();
-        User currentUser = null;
-        if(principal != null) {
-            Optional<User> optionalUser = repository.findByEmail(principal.getUsername());
-            if(optionalUser.isPresent())
-                currentUser = optionalUser.get();
-        }
-        return currentUser;
-    }
-
-    public UserDto getCurrentUserDetailsAsDto() {
-        return UserMapper.map(getCurrentUserDetails());
-    }
-    private MyUserDetails getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        MyUserDetails principal = (MyUserDetails) authentication.getPrincipal();
-        return principal;
-    }
-
 
     public Page<UserDto> getDoctors(Pageable pageable) {
         return repository.findByRolesContaining(Roles.DOCTOR.name(), pageable).map(UserMapper::map);
@@ -108,12 +92,35 @@ public class UserService {
 
     public User getDoctorByUUID(String uuid) {
         return repository.findByUuidAndRolesContaining(uuid, Roles.DOCTOR.name())
-                         .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(EntityNotFoundException::new);
+    }
+
+    public User getCurrentUserDetails() {
+        MyUserDetails principal = getCurrentUser();
+        User currentUser = null;
+        if(principal != null) {
+            Optional<User> optionalUser = repository.findByEmail(principal.getUsername());
+            if(optionalUser.isPresent())
+                currentUser = optionalUser.get();
+        }
+        return currentUser;
     }
 
     public List<String> getCurrentPatientReports() {
         User patient = getCurrentUserDetails();
         return patient.getDiseases();
+    }
+
+    public AppointmentDto setNewAppointment(AppointmentRequestDto request) throws UserNotFoundException, SlotNotValidException {
+        User doctor = repository.findByUuid(request.getDoctorUuid()).orElseThrow(UserNotFoundException::new);
+        User currentPatient = getCurrentUserDetails();
+        return appointmentService.save(request, doctor, currentPatient);
+    }
+
+    private MyUserDetails getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        MyUserDetails principal = (MyUserDetails) authentication.getPrincipal();
+        return principal;
     }
 
     //update patient
@@ -125,5 +132,4 @@ public class UserService {
         user.setLastName(userDto.getLastName());
         return UserMapper.map(repository.save(user));
     }
-
 }

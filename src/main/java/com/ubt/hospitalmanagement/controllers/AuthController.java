@@ -65,7 +65,7 @@ public class AuthController {
         userService.updateDoctor(doctorUuid, doctorDto);
     }
 
-    @PostMapping(path = "/patients/")
+    @PostMapping(path = "/patients")
     public void createPatient(@RequestBody PatientDto patient) {
         userService.addPatient(patient);
     }

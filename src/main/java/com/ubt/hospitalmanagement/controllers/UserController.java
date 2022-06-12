@@ -1,6 +1,10 @@
 package com.ubt.hospitalmanagement.controllers;
 
+import com.ubt.hospitalmanagement.config.exceptions.SlotNotValidException;
+import com.ubt.hospitalmanagement.config.exceptions.UserNotFoundException;
+import com.ubt.hospitalmanagement.dtos.AppointmentDto;
 import com.ubt.hospitalmanagement.dtos.UserDto;
+import com.ubt.hospitalmanagement.dtos.requests.AppointmentRequestDto;
 import com.ubt.hospitalmanagement.dtos.requests.ScheduleRequest;
 import com.ubt.hospitalmanagement.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -28,11 +32,6 @@ public class UserController {
         return ResponseEntity.ok(userService.getDoctors(pageable));
     }
 
-    @GetMapping
-    public ResponseEntity<UserDto> getCurrentUserdetails() {
-        return ResponseEntity.ok(userService.getCurrentUserDetailsAsDto());
-    }
-
     @GetMapping("/reports")
     public ResponseEntity<List<String>> getPatientHistory() {
         return ResponseEntity.ok(userService.getCurrentPatientReports());
@@ -42,6 +41,11 @@ public class UserController {
     @PutMapping("/{uuid}")
     public ResponseEntity<?> updateUserFromAdmin(@PathVariable String uuid, @RequestBody UserDto userDto) {
         return ResponseEntity.ok(userService.updateUser(uuid, userDto));
+    }
+
+    @PostMapping("/appointment")
+    public ResponseEntity<AppointmentDto> setNewAppointment(@RequestBody AppointmentRequestDto requestDto) throws UserNotFoundException, SlotNotValidException {
+        return ResponseEntity.ok(userService.setNewAppointment(requestDto));
     }
 
 }

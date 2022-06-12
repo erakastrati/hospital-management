@@ -49,7 +49,6 @@ public class UserMapper {
                 .workingDays(Optional.ofNullable(user.getWorkingDays()).map(WorkTimeMapper::map).orElse(null))
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-                .roles(user.getRoles())
                 .build();
     }
 }

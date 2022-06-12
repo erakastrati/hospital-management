@@ -1,11 +1,13 @@
 package com.ubt.hospitalmanagement.services;
 
 import com.ubt.hospitalmanagement.dtos.requests.ScheduleRequest;
+import com.ubt.hospitalmanagement.entities.User;
 import com.ubt.hospitalmanagement.entities.WorkTime;
 import com.ubt.hospitalmanagement.repositories.WorkTimeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,18 +17,23 @@ public class WorkTimeService {
 
     private final WorkTimeRepository repository;
 
-    public List<WorkTime> saveWorkTimes(List<ScheduleRequest> requests) {
+    public List<WorkTime> saveWorkTimes(List<ScheduleRequest> requests, User doctor) {
         List<WorkTime> workTimes = new ArrayList<>();
         for(ScheduleRequest request : requests) {
             workTimes.add(repository.save(WorkTime.builder()
                             .day(request.getWeekDay())
                             .paradite(request.isParadite())
                             .pasdite(request.isPasdite())
-                            .pushim(request.isPushim())
-
+                            .doctor(doctor)
                     .build())
             );
         }
         return workTimes;
+    }
+
+    public WorkTime getWorkTimeForDoctorAndWeekDay(User doctor, String weekDay) {
+        WorkTime workTime = repository.findFirstByDoctorAndDay(doctor, weekDay.toLowerCase())
+                                      .orElseThrow(EntityNotFoundException::new);
+        return workTime;
     }
 }
