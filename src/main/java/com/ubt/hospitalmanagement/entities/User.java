@@ -18,7 +18,7 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
 
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
