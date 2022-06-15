@@ -17,6 +17,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
+
 @RestController
 @RequestMapping(value = "/auth")
 @RequiredArgsConstructor
@@ -66,6 +68,7 @@ public class AuthController {
     }
 
     @PostMapping(path = "/patients")
+    @RolesAllowed({"ROLE_DOCTOR"})
     public void createPatient(@RequestBody PatientDto patient) {
         userService.addPatient(patient);
     }
