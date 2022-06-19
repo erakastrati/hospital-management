@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class AppointmentRequestDto {
 
-    private String doctorUuid;
+    private Integer doctorId;
     private LocalDate date;
     private String description;
     private SlotDto slot;

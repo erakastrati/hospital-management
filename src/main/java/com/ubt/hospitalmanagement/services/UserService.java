@@ -105,6 +105,11 @@ public class UserService {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
+    public UserDto getDoctorDtoById(Integer id) {
+        return UserMapper.map(repository.findByIdAndRolesContaining(id, Roles.DOCTOR.name())
+                .orElseThrow(EntityNotFoundException::new));
+    }
+
     public User getCurrentUserDetails() {
         MyUserDetails principal = getCurrentUser();
         User currentUser = null;
@@ -122,7 +127,7 @@ public class UserService {
     }
 
     public AppointmentDto setNewAppointment(AppointmentRequestDto request) throws UserNotFoundException, SlotNotValidException {
-        User doctor = repository.findByUuid(request.getDoctorUuid()).orElseThrow(UserNotFoundException::new);
+        User doctor = repository.findById(request.getDoctorId()).orElseThrow(UserNotFoundException::new);
         User currentPatient = getCurrentUserDetails();
         return appointmentService.save(request, doctor, currentPatient);
     }
@@ -145,5 +150,9 @@ public class UserService {
 
     public void contactUs(ContactUsDto request) {
         // send email to us -TBD
+    }
+
+    public List<UserDto> getDoctors() {
+        return UserMapper.map(repository.findByRolesContaining(Roles.DOCTOR.name()));
     }
 }

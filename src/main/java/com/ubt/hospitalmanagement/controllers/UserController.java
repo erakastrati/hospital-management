@@ -55,4 +55,9 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/doctor-details/{id}")
+    public ResponseEntity<UserDto> getDoctorById(@PathVariable Integer id) {
+        return ResponseEntity.ok(userService.getDoctorDtoById(id));
+    }
+
 }

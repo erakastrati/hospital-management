@@ -1,12 +1,13 @@
 package com.ubt.hospitalmanagement.controllers;
 
+import com.ubt.hospitalmanagement.dtos.DoctorReviewDto;
 import com.ubt.hospitalmanagement.dtos.requests.ReviewRequest;
 import com.ubt.hospitalmanagement.services.DoctorReviewService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,5 +19,10 @@ public class DoctorReviewController {
     @PostMapping
     public void addReview(@RequestBody ReviewRequest request){
         service.addReview(request);
+    }
+
+    @GetMapping("/{doctorId}")
+    public ResponseEntity<List<DoctorReviewDto>> getSpecificDoctorReviews(@PathVariable Integer doctorId) {
+        return ResponseEntity.ok(service.getDoctorReviews(doctorId));
     }
 }
