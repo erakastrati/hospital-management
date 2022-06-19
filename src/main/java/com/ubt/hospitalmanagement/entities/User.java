@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -18,7 +20,7 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -47,6 +49,9 @@ public class User {
 
     private String firstName;
     private String lastName;
+    private LocalDate dateOfBirth;
+    private String gender;
+    private String mobileNumber;
 
 
 

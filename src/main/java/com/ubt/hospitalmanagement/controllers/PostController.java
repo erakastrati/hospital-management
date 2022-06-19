@@ -17,7 +17,7 @@ public class PostController {
     private final PostsService service;
 
     @PostMapping("/{id}")
-    public ResponseEntity<PostDto> createPostForDoctor(@PathVariable Long id, @RequestBody PostDto postDto) {
+    public ResponseEntity<PostDto> createPostForDoctor(@PathVariable Integer id, @RequestBody PostDto postDto) {
         return ResponseEntity.ok(service.createPost(postDto, id));
     }
 
@@ -27,7 +27,7 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Page<PostDto>> getAllPostsPaginated(@PathVariable Long id, @PageableDefault(size = 10, page = 0) Pageable pageable) {
+    public ResponseEntity<Page<PostDto>> getAllPostsPaginated(@PathVariable Integer id, @PageableDefault(size = 10, page = 0) Pageable pageable) {
         return ResponseEntity.ok(service.getPostsOfDoctor(id, pageable));
     }
 }

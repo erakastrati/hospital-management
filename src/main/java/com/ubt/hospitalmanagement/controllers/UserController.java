@@ -5,6 +5,7 @@ import com.ubt.hospitalmanagement.config.exceptions.UserNotFoundException;
 import com.ubt.hospitalmanagement.dtos.AppointmentDto;
 import com.ubt.hospitalmanagement.dtos.UserDto;
 import com.ubt.hospitalmanagement.dtos.requests.AppointmentRequestDto;
+import com.ubt.hospitalmanagement.dtos.requests.ContactUsDto;
 import com.ubt.hospitalmanagement.dtos.requests.ScheduleRequest;
 import com.ubt.hospitalmanagement.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/schedule")
-    public void setDoctorSchedule(@RequestBody List<ScheduleRequest> request, @RequestParam Long id) {
+    public void setDoctorSchedule(@RequestBody List<ScheduleRequest> request, @RequestParam Integer id) {
         userService.setDoctorWorkingDays(request, id);
     }
 
@@ -46,6 +47,12 @@ public class UserController {
     @PostMapping("/appointment")
     public ResponseEntity<AppointmentDto> setNewAppointment(@RequestBody AppointmentRequestDto requestDto) throws UserNotFoundException, SlotNotValidException {
         return ResponseEntity.ok(userService.setNewAppointment(requestDto));
+    }
+
+    @PostMapping("/contact")
+    public ResponseEntity<Void> contactUs(@RequestBody ContactUsDto contactRequest) {
+        userService.contactUs(contactRequest);
+        return ResponseEntity.ok().build();
     }
 
 }

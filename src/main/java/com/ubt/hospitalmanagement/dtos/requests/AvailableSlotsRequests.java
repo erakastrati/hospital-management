@@ -10,6 +10,6 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 public class AvailableSlotsRequests {
-    private Long doctorId;
+    private Integer doctorId;
     private LocalDate date;
 }

@@ -21,11 +21,11 @@ public class PostsService {
         return repository.findAll(pageable).map(PostMapper::map);
     }
 
-    public Page<PostDto> getPostsOfDoctor(Long doctorId, Pageable pageable) {
+    public Page<PostDto> getPostsOfDoctor(Integer doctorId, Pageable pageable) {
         return repository.findByOwner(userService.getDoctorById(doctorId), pageable).map(PostMapper::map);
     }
 
-    public PostDto createPost(PostDto post, Long doctorId) {
+    public PostDto createPost(PostDto post, Integer doctorId) {
         User doctor = userService.getDoctorById(doctorId);
         Posts savedPost = PostMapper.map(post);
         savedPost.setOwner(doctor);

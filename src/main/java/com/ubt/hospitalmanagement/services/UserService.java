@@ -4,6 +4,7 @@ import com.ubt.hospitalmanagement.config.exceptions.SlotNotValidException;
 import com.ubt.hospitalmanagement.config.exceptions.UserNotFoundException;
 import com.ubt.hospitalmanagement.dtos.*;
 import com.ubt.hospitalmanagement.dtos.requests.AppointmentRequestDto;
+import com.ubt.hospitalmanagement.dtos.requests.ContactUsDto;
 import com.ubt.hospitalmanagement.entities.MyUserDetails;
 import com.ubt.hospitalmanagement.dtos.response.mappers.UserMapper;
 import com.ubt.hospitalmanagement.dtos.requests.ScheduleRequest;
@@ -41,7 +42,12 @@ public class UserService {
                 .email(request.getEmail())
                 .password(request.getPassword())
                 .active(true)
-                .roles(Roles.DOCTOR.name())
+                .roles(request.isDoctor() ? Roles.DOCTOR.name() : Roles.PATIENT.name())
+                .dateOfBirth(request.getDateOfBirth())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .gender(request.getGender())
+                .mobileNumber(request.getMobileNumber())
                 .build());
     }
 
@@ -70,7 +76,7 @@ public class UserService {
         repository.save(user);
     }
 
-    public void setDoctorWorkingDays(List<ScheduleRequest> request, Long doctorId) {
+    public void setDoctorWorkingDays(List<ScheduleRequest> request, Integer doctorId) {
         User doctor = getDoctorById(doctorId);
         List<WorkTime> workTimes = workTimeService.saveWorkTimes(request, doctor);
 
@@ -94,7 +100,7 @@ public class UserService {
         return user;
     }
 
-    public User getDoctorById(Long id) {
+    public User getDoctorById(Integer id) {
         return repository.findByIdAndRolesContaining(id, Roles.DOCTOR.name())
                 .orElseThrow(EntityNotFoundException::new);
     }
@@ -135,5 +141,9 @@ public class UserService {
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         return UserMapper.map(repository.save(user));
+    }
+
+    public void contactUs(ContactUsDto request) {
+        // send email to us -TBD
     }
 }

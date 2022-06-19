@@ -10,14 +10,19 @@ import com.ubt.hospitalmanagement.services.JwtUtil;
 import com.ubt.hospitalmanagement.services.MyUserDetailsService;
 import com.ubt.hospitalmanagement.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/auth")
@@ -46,6 +51,11 @@ public class AuthController {
 
         final UserDetails userDetails = userDetailsService
             .loadUserByUsername(authenticationRequest.getEmail());
+
+        List<String> roles = userDetails.getAuthorities().stream().map(auth -> auth.getAuthority()).collect(Collectors.toList());
+        if(!roles.contains("ROLE_" + authenticationRequest.getRole().toUpperCase())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User is not a " + authenticationRequest.getRole());
+        }
 
         final String jwt = jwtTokenUtil.generateToken(userDetails);
 
