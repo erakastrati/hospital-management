@@ -38,10 +38,15 @@ public class UserController {
         return ResponseEntity.ok(userService.getCurrentPatientReports());
     }
 
-    // ONLY ADMIN ROLE
-    @PutMapping("/{uuid}")
-    public ResponseEntity<?> updateUserFromAdmin(@PathVariable String uuid, @RequestBody UserDto userDto) {
-        return ResponseEntity.ok(userService.updateUser(uuid, userDto));
+//    // ONLY ADMIN ROLE
+//    @PutMapping("/{uuid}")
+//    public ResponseEntity<?> updateUserFromAdmin(@PathVariable String uuid, @RequestBody UserDto userDto) {
+//        return ResponseEntity.ok(userService.updateUser(uuid, userDto));
+//    }
+
+    @PutMapping()
+    public ResponseEntity<?> updateUserFromAdmin(@RequestBody UserDto userDto) {
+        return ResponseEntity.ok(userService.updateCurrentUser(userDto));
     }
 
     @PostMapping("/appointment")

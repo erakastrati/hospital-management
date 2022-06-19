@@ -21,4 +21,6 @@ public class UserDto {
     List<WorkTimeDto> workingDays;
     private String firstName;
     private String lastName;
+    private String mobileNumber;
+
 }

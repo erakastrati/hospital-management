@@ -105,6 +105,11 @@ public class UserService {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
+    public User getPatientById(Integer id) {
+        return repository.findByIdAndRolesContaining(id, Roles.PATIENT.name())
+                .orElseThrow(EntityNotFoundException::new);
+    }
+
     public UserDto getDoctorDtoById(Integer id) {
         return UserMapper.map(repository.findByIdAndRolesContaining(id, Roles.DOCTOR.name())
                 .orElseThrow(EntityNotFoundException::new));
@@ -138,13 +143,26 @@ public class UserService {
         return principal;
     }
 
-    //update patient
-    public UserDto updateUser(String userUuid, UserDto userDto) {
-        User user = repository.findByUuid(userUuid).orElseThrow(EntityNotFoundException::new);
-        // update patient
+
+//    public UserDto updateUser(String userUuid, UserDto userDto) {
+//        User user = repository.findByUuid(userUuid).orElseThrow(EntityNotFoundException::new);
+//
+//        user.setDiseases(userDto.getDiseases());
+//        user.setFirstName(userDto.getFirstName());
+//        user.setLastName(userDto.getLastName());
+//        user.setMobileNumber(userDto.getMobileNumber());
+//        user.setExperiences(userDto.getEmail());
+//        return UserMapper.map(repository.save(user));
+//    }
+
+    public UserDto updateCurrentUser(UserDto userDto) {
+        User user = getCurrentUserDetails();
+
         user.setDiseases(userDto.getDiseases());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
+        user.setMobileNumber(userDto.getMobileNumber());
+        user.setEmail(userDto.getEmail());
         return UserMapper.map(repository.save(user));
     }
 
