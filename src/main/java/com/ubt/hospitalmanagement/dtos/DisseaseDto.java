@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class DisseaseDto {
-    private String patientUuid;
+    private Integer patientId;
     private String dissease;
 }

@@ -72,9 +72,9 @@ public class AuthController {
         userService.addDoctor(doctor);
     }
 
-    @PutMapping(path = "/doctors/{doctorUuid}")
-    public void updateDoctor(@PathVariable String doctorUuid, @RequestBody DoctorDto doctorDto) {
-        userService.updateDoctor(doctorUuid, doctorDto);
+    @PutMapping(path = "/doctors/{doctorId}")
+    public void updateDoctor(@PathVariable Integer doctorId, @RequestBody DoctorDto doctorDto) {
+        userService.updateDoctor(doctorId, doctorDto);
     }
 
     @PostMapping(path = "/patients")

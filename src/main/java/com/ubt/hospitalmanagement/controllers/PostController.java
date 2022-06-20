@@ -27,7 +27,12 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Page<PostDto>> getAllPostsPaginated(@PathVariable Integer id, @PageableDefault(size = 10, page = 0) Pageable pageable) {
+    public ResponseEntity<PostDto> getSpecificPost(@PathVariable Integer id) {
+        return ResponseEntity.ok(service.getSpecificPost(id));
+    }
+
+    @GetMapping("/doctor/{id}")
+    public ResponseEntity<Page<PostDto>> getAllPostsForDoctorPaginated(@PathVariable Integer id, @PageableDefault(size = 10, page = 0) Pageable pageable) {
         return ResponseEntity.ok(service.getPostsOfDoctor(id, pageable));
     }
 }

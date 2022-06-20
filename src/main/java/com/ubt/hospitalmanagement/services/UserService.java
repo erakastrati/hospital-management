@@ -59,8 +59,8 @@ public class UserService {
 
 
     // TODO we need to update more properties
-    public void updateDoctor(String doctorUuid, DoctorDto updateDoctorRequest) {
-        User doctor = repository.findByUuid(doctorUuid).orElseThrow(EntityNotFoundException::new);
+    public void updateDoctor(Integer doctorId, DoctorDto updateDoctorRequest) {
+        User doctor = repository.findById(doctorId).orElseThrow(EntityNotFoundException::new);
         doctor.setExperiences(updateDoctorRequest.getExperiences());
         repository.save(doctor);
     }
@@ -71,7 +71,7 @@ public class UserService {
     }
 
     public void addDissease(DisseaseDto request) {
-        User user = repository.findByUuid(request.getPatientUuid()).orElseThrow(EntityNotFoundException::new);
+        User user = repository.findById(request.getPatientId()).orElseThrow(EntityNotFoundException::new);
         user.getDiseases().add(request.getDissease());
         repository.save(user);
     }
@@ -95,7 +95,7 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User already exists");
         }
 
-        user.setUuid(UUID.randomUUID().toString());
+//        user.setUuid(UUID.randomUUID().toString());
         repository.save(user);
         return user;
     }
@@ -124,6 +124,11 @@ public class UserService {
                 currentUser = optionalUser.get();
         }
         return currentUser;
+    }
+
+    public UserDto getCurrentUserDetailsAsDto() {
+        User user = getCurrentUserDetails();
+        return UserMapper.map(user);
     }
 
     public List<String> getCurrentPatientReports() {

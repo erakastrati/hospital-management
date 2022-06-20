@@ -8,7 +8,6 @@ import lombok.Data;
 @Data
 public class ScheduleRequest {
 
-    private String doctorUuid;
     private String weekDay;
     // TODO CHANGE IN ENGLISH ONES
     @JsonProperty

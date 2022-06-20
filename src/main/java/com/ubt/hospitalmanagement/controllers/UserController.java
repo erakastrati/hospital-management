@@ -65,4 +65,9 @@ public class UserController {
         return ResponseEntity.ok(userService.getDoctorDtoById(id));
     }
 
+    @GetMapping
+    public ResponseEntity<UserDto> getCurrentUserDetails() {
+        return ResponseEntity.ok(userService.getCurrentUserDetailsAsDto());
+    }
+
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface PostRepository extends JpaRepository<Posts, Long> {
+public interface PostRepository extends JpaRepository<Posts, Integer> {
 
     Page<Posts> findByOwner(User owner, Pageable pageable);
 }

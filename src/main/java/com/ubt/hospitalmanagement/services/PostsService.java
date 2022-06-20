@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+
 @Service
 @RequiredArgsConstructor
 public class PostsService {
@@ -30,5 +32,9 @@ public class PostsService {
         Posts savedPost = PostMapper.map(post);
         savedPost.setOwner(doctor);
         return PostMapper.map(repository.save(savedPost));
+    }
+
+    public PostDto getSpecificPost(Integer id) {
+        return PostMapper.map(repository.findById(id).orElseThrow(EntityNotFoundException::new));
     }
 }

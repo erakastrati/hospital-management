@@ -18,7 +18,7 @@ public class UserDto {
     private List<String> experiences;
     private List<String> diseases;
 
-    List<WorkTimeDto> workingDays;
+//    List<WorkTimeDto> workingDays;
     private String firstName;
     private String lastName;
     private String mobileNumber;

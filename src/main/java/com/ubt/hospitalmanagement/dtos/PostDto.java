@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PostDto {
 
-    private Long id;
+    private Integer id;
 
     private UserDto owner;
 
