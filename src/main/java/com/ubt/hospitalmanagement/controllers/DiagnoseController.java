@@ -25,4 +25,9 @@ public class DiagnoseController {
         return ResponseEntity.ok(service.getDiagnosesForCurrentPatient());
     }
 
+    @GetMapping("/patient/{patientId}")
+    public ResponseEntity<List<DiagnoseDto>> getPatientDiagnoses(@PathVariable("patientId") Integer patientId) {
+        return ResponseEntity.ok(service.getDiagnosesForPatient(patientId));
+    }
+
 }

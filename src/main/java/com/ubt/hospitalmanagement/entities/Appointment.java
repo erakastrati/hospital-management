@@ -1,5 +1,6 @@
 package com.ubt.hospitalmanagement.entities;
 
+import com.ubt.hospitalmanagement.AppointmentStatus;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,4 +33,8 @@ public class Appointment {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "slot_id")
     private Slot slot;
+
+    @Enumerated(EnumType.STRING)
+    private AppointmentStatus status;
+
 }

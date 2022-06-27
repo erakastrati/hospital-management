@@ -4,11 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -43,6 +41,7 @@ public class User {
     private String lastName;
     private LocalDate dateOfBirth;
     private String gender;
+    private Long age;
     private String mobileNumber;
 
 

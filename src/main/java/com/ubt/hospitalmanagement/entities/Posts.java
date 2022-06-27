@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
-@Entity
+@Document(collection = "posts")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,14 +18,13 @@ public class Posts {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User owner;
+    private Integer doctorId;
 
     private String title;
     private String category;
     private String description;
+    private LocalDate publishDate;
 
 }

@@ -1,5 +1,6 @@
 package com.ubt.hospitalmanagement.dtos;
 
+import com.ubt.hospitalmanagement.AppointmentStatus;
 import com.ubt.hospitalmanagement.entities.Slot;
 import com.ubt.hospitalmanagement.entities.User;
 import lombok.Builder;
@@ -22,4 +23,6 @@ public class AppointmentDto {
     private String description;
 
     private SlotDto slot;
+
+    private AppointmentStatus status;
 }

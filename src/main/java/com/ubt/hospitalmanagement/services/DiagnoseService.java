@@ -35,4 +35,9 @@ public class DiagnoseService {
         return DiagnoseMapper.map(repository.findByPatient(patient));
     }
 
+    public List<DiagnoseDto> getDiagnosesForPatient(Integer patientId) {
+        User patient = userService.getPatientById(patientId);
+        return DiagnoseMapper.map(repository.findByPatient(patient));
+    }
+
 }

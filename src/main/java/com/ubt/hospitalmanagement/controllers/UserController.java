@@ -11,6 +11,7 @@ import com.ubt.hospitalmanagement.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,11 @@ public class UserController {
     @GetMapping("/doctors")
     public ResponseEntity<Page<UserDto>> getDoctors(Pageable pageable) {
         return ResponseEntity.ok(userService.getDoctors(pageable));
+    }
+
+    @GetMapping("/patients")
+    public ResponseEntity<Page<UserDto>> getPatients(Pageable pageable) {
+        return ResponseEntity.ok(userService.getPatients(pageable));
     }
 
     @GetMapping("/reports")
@@ -54,6 +60,11 @@ public class UserController {
         return ResponseEntity.ok(userService.setNewAppointment(requestDto));
     }
 
+    @GetMapping("/appointment")
+    public ResponseEntity<Page<AppointmentDto>> getCurrentDoctorAppointments(@PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(userService.getCurrentDoctorAppointments(pageable));
+    }
+
     @PostMapping("/contact")
     public ResponseEntity<Void> contactUs(@RequestBody ContactUsDto contactRequest) {
         userService.contactUs(contactRequest);
@@ -63,6 +74,11 @@ public class UserController {
     @GetMapping("/doctor-details/{id}")
     public ResponseEntity<UserDto> getDoctorById(@PathVariable Integer id) {
         return ResponseEntity.ok(userService.getDoctorDtoById(id));
+    }
+
+    @GetMapping("/patient-details/{id}")
+    public ResponseEntity<UserDto> getPatientById(@PathVariable Integer id) {
+        return ResponseEntity.ok(userService.getPatientDtoById(id));
     }
 
     @GetMapping

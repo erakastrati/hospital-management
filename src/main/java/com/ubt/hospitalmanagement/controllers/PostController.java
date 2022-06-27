@@ -27,7 +27,7 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostDto> getSpecificPost(@PathVariable Integer id) {
+    public ResponseEntity<PostDto> getSpecificPost(@PathVariable String id) {
         return ResponseEntity.ok(service.getSpecificPost(id));
     }
 

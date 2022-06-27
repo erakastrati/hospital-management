@@ -5,6 +5,7 @@ import com.ubt.hospitalmanagement.config.exceptions.UserNotFoundException;
 import com.ubt.hospitalmanagement.dtos.*;
 import com.ubt.hospitalmanagement.dtos.requests.AppointmentRequestDto;
 import com.ubt.hospitalmanagement.dtos.requests.ContactUsDto;
+import com.ubt.hospitalmanagement.entities.Appointment;
 import com.ubt.hospitalmanagement.entities.MyUserDetails;
 import com.ubt.hospitalmanagement.dtos.response.mappers.UserMapper;
 import com.ubt.hospitalmanagement.dtos.requests.ScheduleRequest;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -88,6 +90,18 @@ public class UserService {
         return repository.findByRolesContaining(Roles.DOCTOR.name(), pageable).map(UserMapper::map);
     }
 
+    public Page<UserDto> getPatients(Pageable pageable) {
+        Page<UserDto> users = repository.findByRolesContaining(Roles.PATIENT.name(), pageable).map(UserMapper::map);
+        for(UserDto user : users.getContent()) {
+            //set last appointment
+            Appointment lastAppointment = appointmentService.getLastAppointmentOfPatient(user.getId());
+            if(Optional.ofNullable(lastAppointment).isPresent()) {
+                user.setLastAppointment(lastAppointment.getDate());
+            }
+        }
+        return users;
+    }
+
     private User createUser(User user) {
         Optional<User> optionalUser = repository.findByEmail(user.getEmail());
 
@@ -108,6 +122,11 @@ public class UserService {
     public User getPatientById(Integer id) {
         return repository.findByIdAndRolesContaining(id, Roles.PATIENT.name())
                 .orElseThrow(EntityNotFoundException::new);
+    }
+
+    public UserDto getPatientDtoById(Integer id) {
+        return UserMapper.map(repository.findByIdAndRolesContaining(id, Roles.PATIENT.name())
+                .orElseThrow(EntityNotFoundException::new));
     }
 
     public UserDto getDoctorDtoById(Integer id) {
@@ -140,6 +159,11 @@ public class UserService {
         User doctor = repository.findById(request.getDoctorId()).orElseThrow(UserNotFoundException::new);
         User currentPatient = getCurrentUserDetails();
         return appointmentService.save(request, doctor, currentPatient);
+    }
+
+    public Page<AppointmentDto> getCurrentDoctorAppointments(Pageable pageable) {
+        User currentDoctor = getCurrentUserDetails();
+        return appointmentService.getCurrentDoctorAppointments(currentDoctor, pageable);
     }
 
     private MyUserDetails getCurrentUser() {

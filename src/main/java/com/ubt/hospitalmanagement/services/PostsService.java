@@ -24,17 +24,16 @@ public class PostsService {
     }
 
     public Page<PostDto> getPostsOfDoctor(Integer doctorId, Pageable pageable) {
-        return repository.findByOwner(userService.getDoctorById(doctorId), pageable).map(PostMapper::map);
+        return repository.findByDoctorId(doctorId, pageable).map(PostMapper::map);
     }
 
     public PostDto createPost(PostDto post, Integer doctorId) {
-        User doctor = userService.getDoctorById(doctorId);
         Posts savedPost = PostMapper.map(post);
-        savedPost.setOwner(doctor);
+        savedPost.setDoctorId(doctorId);
         return PostMapper.map(repository.save(savedPost));
     }
 
-    public PostDto getSpecificPost(Integer id) {
+    public PostDto getSpecificPost(String id) {
         return PostMapper.map(repository.findById(id).orElseThrow(EntityNotFoundException::new));
     }
 }

@@ -1,5 +1,6 @@
 package com.ubt.hospitalmanagement.services;
 
+import com.ubt.hospitalmanagement.AppointmentStatus;
 import com.ubt.hospitalmanagement.config.exceptions.SlotNotValidException;
 import com.ubt.hospitalmanagement.dtos.AppointmentDto;
 import com.ubt.hospitalmanagement.dtos.requests.AppointmentRequestDto;
@@ -11,6 +12,8 @@ import com.ubt.hospitalmanagement.dtos.response.mappers.AppointmentMapper;
 import com.ubt.hospitalmanagement.repositories.AppointmentRepository;
 import com.ubt.hospitalmanagement.repositories.SlotRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
@@ -63,8 +66,21 @@ public class AppointmentService {
                 .patient(patient)
                 .date(requestDto.getDate())
                 .slot(foundAvailableSlot)
+                .status(AppointmentStatus.PENDING_APPROVAL)
                 .build()));
 
+     }
+
+     public Page<AppointmentDto> getCurrentDoctorAppointments(User doctor, Pageable pageable) {
+        return repository.findByDoctor(doctor, pageable).map(AppointmentMapper::map);
+     }
+
+     public Appointment getLastAppointmentOfPatient(Integer patientId) {
+        List<Appointment> appointments = repository.findByPatient_IdOrderByDateDesc(patientId);
+        if(!appointments.isEmpty()) {
+            return appointments.stream().findFirst().get();
+        }
+        return null;
      }
 
 

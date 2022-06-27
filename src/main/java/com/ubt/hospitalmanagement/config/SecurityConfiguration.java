@@ -40,7 +40,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf().disable()
+        httpSecurity.cors()
+                .and()
+                .csrf().disable()
                 .authorizeRequests().antMatchers("/auth/authenticate",
                         "/auth/signup",
                         "/swagger-ui.html",
@@ -58,7 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public CorsFilter corsFilter() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOriginPattern("");
+        config.addAllowedOriginPattern("*");
 
         config.addAllowedOrigin("*"); // this allows all origin
         config.addAllowedHeader("*"); // this allows all headers

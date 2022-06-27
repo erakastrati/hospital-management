@@ -14,8 +14,9 @@ public class PostMapper {
                 .description(post.getDescription())
                 .id(post.getId())
                 .category(post.getCategory())
-                .owner(Optional.ofNullable(post.getOwner()).map(UserMapper::map).orElse(null))
                 .title(post.getTitle())
+                .doctorId(post.getDoctorId())
+                .publishDate(post.getPublishDate())
                 .build();
     }
 
@@ -25,6 +26,8 @@ public class PostMapper {
                 .id(post.getId())
                 .category(post.getCategory())
                 .title(post.getTitle())
+                .doctorId(post.getDoctorId())
+                .publishDate(post.getPublishDate())
                 .build();
     }
 
