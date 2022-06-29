@@ -192,6 +192,7 @@ public class UserService {
         user.setLastName(userDto.getLastName());
         user.setMobileNumber(userDto.getMobileNumber());
         user.setEmail(userDto.getEmail());
+        user.setExperiences(userDto.getExperiences());
         return UserMapper.map(repository.save(user));
     }
 

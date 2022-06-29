@@ -13,6 +13,7 @@ public class UserDto {
     private Integer id;
     private String uuid;
 
+
     private String email;
     private boolean active;
 
