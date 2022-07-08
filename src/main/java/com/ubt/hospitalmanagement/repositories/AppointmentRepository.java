@@ -1,6 +1,6 @@
 package com.ubt.hospitalmanagement.repositories;
 
-import com.ubt.hospitalmanagement.AppointmentStatus;
+import com.ubt.hospitalmanagement.enums.AppointmentStatus;
 import com.ubt.hospitalmanagement.entities.Appointment;
 import com.ubt.hospitalmanagement.entities.User;
 import org.springframework.data.domain.Page;

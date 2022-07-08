@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController
@@ -18,27 +19,32 @@ public class SlotsController {
     private final SlotService service;
 
     @PostMapping
+    @RolesAllowed({"ROLE_DOCTOR", "ROLE_ADMIN", "ROLE_PATIENT"})
     public ResponseEntity<List<SlotDto>> getAvailableSlotsPerDayAndDoctor(@RequestBody AvailableSlotsRequests request) {
         return ResponseEntity.ok(service.getAvailableSlotsPerDoctorAndDay(request));
     }
 
     @GetMapping("/appointment")
+    @RolesAllowed({"ROLE_DOCTOR", "ROLE_ADMIN"})
     public ResponseEntity<List<AppointmentDto>> getAppointments() {
         return ResponseEntity.ok(service.getDoctorAppointments());
     }
 
     @GetMapping("/appointment/all")
+    @RolesAllowed({"ROLE_DOCTOR", "ROLE_ADMIN"})
     public ResponseEntity<List<AppointmentDto>> getAllAppointments() {
         return ResponseEntity.ok(service.getAllAppointments());
     }
 
     @PutMapping("/appointment/approve/{appointmentId}")
+    @RolesAllowed({"ROLE_DOCTOR", "ROLE_ADMIN"})
     public ResponseEntity<Void> approveAppointment(@PathVariable Long appointmentId) {
         service.approveAppointment(appointmentId);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/appointment/decline/{appointmentId}")
+    @RolesAllowed({"ROLE_DOCTOR", "ROLE_ADMIN"})
     public ResponseEntity<Void> declineAppointment(@PathVariable Long appointmentId) {
         service.declineAppointment(appointmentId);
         return ResponseEntity.ok().build();

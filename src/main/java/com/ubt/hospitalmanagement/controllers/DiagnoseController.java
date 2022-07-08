@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController
@@ -16,16 +17,19 @@ public class DiagnoseController {
     private final DiagnoseService service;
 
     @PostMapping
+    @RolesAllowed({"ROLE_DOCTOR", "ROLE_ADMIN"})
     public ResponseEntity<DiagnoseDto> addDiagnoseToPatient(@RequestBody DiagnoseDto diagnose) {
         return ResponseEntity.ok(service.save(diagnose));
     }
 
     @GetMapping()
+    @RolesAllowed({"ROLE_PATIENT"})
     public ResponseEntity<List<DiagnoseDto>> getPatientDiagnoses() {
         return ResponseEntity.ok(service.getDiagnosesForCurrentPatient());
     }
 
     @GetMapping("/patient/{patientId}")
+    @RolesAllowed({"ROLE_DOCTOR", "ROLE_ADMIN"})
     public ResponseEntity<List<DiagnoseDto>> getPatientDiagnoses(@PathVariable("patientId") Integer patientId) {
         return ResponseEntity.ok(service.getDiagnosesForPatient(patientId));
     }

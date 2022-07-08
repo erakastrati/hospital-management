@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -34,15 +35,22 @@ public class User {
     private List<String> diseases;
 
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     List<WorkTime> workingDays;
 
     private String firstName;
     private String lastName;
-    private LocalDate dateOfBirth;
+
+    @Lob
+    @Type(type="org.hibernate.type.BinaryType")
+    @Column(name = "profile_picture", length = 1048576)
+    private byte[] profilePicture;
+
     private String gender;
     private Long age;
     private String mobileNumber;
+
+    private LocalDate dateOfBirth;
 
 
 

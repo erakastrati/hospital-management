@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,13 +18,16 @@ public class WorkTimeService {
 
     private final WorkTimeRepository repository;
 
+    @Transactional
     public List<WorkTime> saveWorkTimes(List<ScheduleRequest> requests, User doctor) {
         List<WorkTime> workTimes = new ArrayList<>();
+        repository.deleteByDoctor(doctor);
         for(ScheduleRequest request : requests) {
             workTimes.add(repository.save(WorkTime.builder()
                             .day(request.getWeekDay())
                             .paradite(request.isParadite())
                             .pasdite(request.isPasdite())
+                            .pushim(request.isPushim())
                             .doctor(doctor)
                     .build())
             );
@@ -35,5 +39,9 @@ public class WorkTimeService {
         WorkTime workTime = repository.findFirstByDoctorAndDay(doctor, weekDay.toLowerCase())
                                       .orElseThrow(EntityNotFoundException::new);
         return workTime;
+    }
+
+    public List<WorkTime> getScheduleForDoctor(Integer doctorId) {
+        return repository.findByDoctorId(doctorId);
     }
 }

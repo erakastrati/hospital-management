@@ -1,6 +1,6 @@
 package com.ubt.hospitalmanagement.services;
 
-import com.ubt.hospitalmanagement.AppointmentStatus;
+import com.ubt.hospitalmanagement.enums.AppointmentStatus;
 import com.ubt.hospitalmanagement.config.exceptions.SlotNotValidException;
 import com.ubt.hospitalmanagement.dtos.AppointmentDto;
 import com.ubt.hospitalmanagement.dtos.requests.AppointmentRequestDto;

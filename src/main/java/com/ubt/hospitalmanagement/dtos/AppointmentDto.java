@@ -1,8 +1,6 @@
 package com.ubt.hospitalmanagement.dtos;
 
-import com.ubt.hospitalmanagement.AppointmentStatus;
-import com.ubt.hospitalmanagement.entities.Slot;
-import com.ubt.hospitalmanagement.entities.User;
+import com.ubt.hospitalmanagement.enums.AppointmentStatus;
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,9 +14,13 @@ public class AppointmentDto {
 
     private LocalDate date;
 
-    private UserDto patient;
+//    private UserDto patient;
+//
+//    private UserDto doctor;
 
-    private UserDto doctor;
+//    private String doctorEmail;
+//    private String doctorFirstName;
+//    private String
 
     private String description;
 

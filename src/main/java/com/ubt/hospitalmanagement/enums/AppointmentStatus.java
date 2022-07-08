@@ -1,4 +1,4 @@
-package com.ubt.hospitalmanagement;
+package com.ubt.hospitalmanagement.enums;
 
 public enum AppointmentStatus {
 

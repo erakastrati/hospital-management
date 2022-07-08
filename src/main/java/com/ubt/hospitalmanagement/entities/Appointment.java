@@ -1,11 +1,10 @@
 package com.ubt.hospitalmanagement.entities;
 
-import com.ubt.hospitalmanagement.AppointmentStatus;
+import com.ubt.hospitalmanagement.enums.AppointmentStatus;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -20,11 +19,11 @@ public class Appointment {
 
     private LocalDate date;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private User patient;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private User doctor;
 

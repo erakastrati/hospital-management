@@ -15,16 +15,20 @@ import com.ubt.hospitalmanagement.entities.WorkTime;
 import com.ubt.hospitalmanagement.enums.Roles;
 import com.ubt.hospitalmanagement.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.util.IOUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -80,6 +84,9 @@ public class UserService {
 
     public void setDoctorWorkingDays(List<ScheduleRequest> request, Integer doctorId) {
         User doctor = getDoctorById(doctorId);
+        doctor.setWorkingDays(null);
+        repository.save(doctor);
+
         List<WorkTime> workTimes = workTimeService.saveWorkTimes(request, doctor);
 
         doctor.setWorkingDays(workTimes);
@@ -202,5 +209,29 @@ public class UserService {
 
     public List<UserDto> getDoctors() {
         return UserMapper.map(repository.findByRolesContaining(Roles.DOCTOR.name()));
+    }
+
+    public void uploadProfilePicture(MultipartFile picture) throws IOException {
+        User currentUser = getCurrentUserDetails();
+        currentUser.setProfilePicture(IOUtils.toByteArray(picture.getInputStream()));
+        repository.save(currentUser);
+    }
+
+    public List<ScheduleRequest> getDoctorSchedule(Integer doctorId) {
+        List<WorkTime> workTimes = workTimeService.getScheduleForDoctor(doctorId);
+        List<ScheduleRequest> scheduleList = new ArrayList<>();
+
+        for(WorkTime wt : workTimes) {
+            scheduleList.add(
+                    ScheduleRequest.builder()
+                            .paradite(wt.isParadite())
+                            .pasdite(wt.isPasdite())
+                            .pushim(wt.isPushim())
+                            .weekDay(wt.getDay())
+                            .build()
+            );
+        }
+
+        return scheduleList;
     }
 }

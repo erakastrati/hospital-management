@@ -31,4 +31,6 @@ public class UserDto {
 
     private LocalDate lastAppointment;
 
+    private byte[] profilePicture;
+
 }

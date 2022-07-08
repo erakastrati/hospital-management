@@ -68,11 +68,13 @@ public class AuthController {
     }
 
     @PostMapping(path = "/doctors")
+    @RolesAllowed({"ROLE_ADMIN"})
     public void addDoctor(@RequestBody DoctorDto doctor) {
         userService.addDoctor(doctor);
     }
 
     @PutMapping(path = "/doctors/{doctorId}")
+    @RolesAllowed({"ROLE_ADMIN"})
     public void updateDoctor(@PathVariable Integer doctorId, @RequestBody DoctorDto doctorDto) {
         userService.updateDoctor(doctorId, doctorDto);
     }
@@ -84,6 +86,7 @@ public class AuthController {
     }
 
     @PutMapping(path = "/patients/")
+    @RolesAllowed({"ROLE_DOCTOR", "ROLE_ADMIN"})
     public void addDisseas(@RequestParam DisseaseDto dissease) {
         userService.addDissease(dissease);
     }

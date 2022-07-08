@@ -7,6 +7,7 @@ import com.ubt.hospitalmanagement.entities.User;
 import com.ubt.hospitalmanagement.enums.Roles;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +42,10 @@ public class UserMapper {
     }
 
     public static UserDto map(User user) {
+        byte[] profilePicture = user.getProfilePicture();
+        if ( profilePicture != null ) {
+            profilePicture = Arrays.copyOf( profilePicture, profilePicture.length );
+        }
         return UserDto.builder()
                 .id(user.getId())
 //                .uuid(user.getUuid())
@@ -55,6 +60,7 @@ public class UserMapper {
                 .age(user.getAge())
                 .gender(user.getGender())
                 .dateOfBirth(user.getDateOfBirth())
+                .profilePicture(profilePicture)
                 .build();
     }
 }
