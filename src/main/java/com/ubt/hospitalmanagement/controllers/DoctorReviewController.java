@@ -2,7 +2,7 @@ package com.ubt.hospitalmanagement.controllers;
 
 import com.ubt.hospitalmanagement.dtos.DoctorReviewDto;
 import com.ubt.hospitalmanagement.dtos.requests.ReviewRequest;
-import com.ubt.hospitalmanagement.services.DoctorReviewService;
+import com.ubt.hospitalmanagement.services.impl.DoctorReviewServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/review")
 public class DoctorReviewController {
 
-    private final DoctorReviewService service;
+    private final DoctorReviewServiceImpl service;
 
     @PostMapping
     @RolesAllowed({"ROLE_ADMIN", "ROLE_PATIENT"})

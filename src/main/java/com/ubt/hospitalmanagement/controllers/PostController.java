@@ -1,7 +1,7 @@
 package com.ubt.hospitalmanagement.controllers;
 
 import com.ubt.hospitalmanagement.dtos.PostDto;
-import com.ubt.hospitalmanagement.services.PostsService;
+import com.ubt.hospitalmanagement.services.impl.PostsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +16,7 @@ import javax.annotation.security.RolesAllowed;
 @RequiredArgsConstructor
 public class PostController {
 
-    private final PostsService service;
+    private final PostsServiceImpl service;
 
     @PostMapping("/{id}")
     @RolesAllowed({"ROLE_ADMIN"})

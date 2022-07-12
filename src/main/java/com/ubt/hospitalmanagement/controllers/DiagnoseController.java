@@ -1,7 +1,7 @@
 package com.ubt.hospitalmanagement.controllers;
 
 import com.ubt.hospitalmanagement.dtos.requests.DiagnoseDto;
-import com.ubt.hospitalmanagement.services.DiagnoseService;
+import com.ubt.hospitalmanagement.services.impl.DiagnoseServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DiagnoseController {
 
-    private final DiagnoseService service;
+    private final DiagnoseServiceImpl service;
 
     @PostMapping
     @RolesAllowed({"ROLE_DOCTOR", "ROLE_ADMIN"})

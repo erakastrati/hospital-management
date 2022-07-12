@@ -3,7 +3,7 @@ package com.ubt.hospitalmanagement.controllers;
 import com.ubt.hospitalmanagement.dtos.AppointmentDto;
 import com.ubt.hospitalmanagement.dtos.SlotDto;
 import com.ubt.hospitalmanagement.dtos.requests.AvailableSlotsRequests;
-import com.ubt.hospitalmanagement.services.SlotService;
+import com.ubt.hospitalmanagement.services.impl.SlotServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SlotsController {
 
-    private final SlotService service;
+    private final SlotServiceImpl service;
 
     @PostMapping
     @RolesAllowed({"ROLE_DOCTOR", "ROLE_ADMIN", "ROLE_PATIENT"})
