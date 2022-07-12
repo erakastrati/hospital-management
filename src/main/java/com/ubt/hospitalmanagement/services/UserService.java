@@ -40,4 +40,6 @@ public interface UserService {
     public void contactUs(ContactUsDto request);
     public List<UserDto> getDoctors();
     public void uploadProfilePicture(MultipartFile picture) throws IOException;
+
+    public List<ScheduleRequest> getDoctorSchedule(Integer doctorId);
 }
