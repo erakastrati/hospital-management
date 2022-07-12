@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
+@Service
 public class SlotServiceImpl implements SlotService {
 
     private final SlotRepository repository;

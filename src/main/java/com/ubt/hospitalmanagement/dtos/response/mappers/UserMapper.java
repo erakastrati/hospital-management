@@ -19,7 +19,6 @@ public class UserMapper {
                 .email(doctor.getEmail())
                 .password(doctor.getPassword())
                 .experiences(doctor.getExperiences())
-                .age(doctor.getAge())
                 .gender(doctor.getGender())
                 .build();
     }
@@ -57,7 +56,6 @@ public class UserMapper {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .mobileNumber(user.getMobileNumber())
-                .age(user.getAge())
                 .gender(user.getGender())
                 .dateOfBirth(user.getDateOfBirth())
                 .profilePicture(profilePicture)

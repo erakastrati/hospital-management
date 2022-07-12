@@ -71,8 +71,8 @@ public class UserController {
 //    }
 
     @PutMapping()
-    @RolesAllowed({"ROLE_ADMIN"})
-    public ResponseEntity<?> updateUserFromAdmin(@RequestBody UserDto userDto) {
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_DOCTOR", "ROLE_PATIENT"})
+    public ResponseEntity<?> updateCurrentUser(@RequestBody UserDto userDto) {
         return ResponseEntity.ok(userService.updateCurrentUser(userDto));
     }
 

@@ -47,7 +47,6 @@ public class User {
     private byte[] profilePicture;
 
     private String gender;
-    private Long age;
     private String mobileNumber;
 
     private LocalDate dateOfBirth;

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
+@Service
 public class AppointmentServiceImpl implements AppointmentService {
 
     private final AppointmentRepository repository;

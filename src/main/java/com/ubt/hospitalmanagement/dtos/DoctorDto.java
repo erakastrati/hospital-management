@@ -19,6 +19,5 @@ public class DoctorDto {
     private LocalDate birthDate;
     private String description;
     private List<String> experiences;
-    private Long age;
     private String gender;
 }

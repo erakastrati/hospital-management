@@ -17,7 +17,7 @@ public class AppointmentMapper {
                 .description(appointment.getDescription())
                 .id(appointment.getId())
 //                .doctor(Optional.ofNullable(appointment.getDoctor()).map(UserMapper::map).orElse(null))
-//                .patient(Optional.ofNullable(appointment.getPatient()).map(UserMapper::map).orElse(null))
+                .patient(Optional.ofNullable(appointment.getPatient()).map(UserMapper::map).orElse(null))
                 .status(appointment.getStatus())
                 .build();
     }

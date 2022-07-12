@@ -14,7 +14,7 @@ public class AppointmentDto {
 
     private LocalDate date;
 
-//    private UserDto patient;
+    private UserDto patient;
 //
 //    private UserDto doctor;
 

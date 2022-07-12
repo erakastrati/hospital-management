@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 
 @RequiredArgsConstructor
+@Service
 public class PostsServiceImpl implements PostsService {
 
     private final PostRepository repository;

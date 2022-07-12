@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Service
 public class DiagnoseServiceImpl implements DiagnoseService {
 
     private final DiagnoseRepository repository;

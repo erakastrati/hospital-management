@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Service
 public class WorkTimeServiceImpl implements WorkTimeService {
 
     private final WorkTimeRepository repository;
