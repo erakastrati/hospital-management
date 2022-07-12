@@ -38,7 +38,7 @@ public class WorkTimeServiceImpl implements WorkTimeService {
 
     public WorkTime getWorkTimeForDoctorAndWeekDay(User doctor, String weekDay) {
         WorkTime workTime = repository.findFirstByDoctorAndDay(doctor, weekDay.toLowerCase())
-                                      .orElseThrow(EntityNotFoundException::new);
+                                      .orElse(null);
         return workTime;
     }
 

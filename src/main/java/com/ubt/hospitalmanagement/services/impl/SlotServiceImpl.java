@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -34,11 +35,16 @@ public class SlotServiceImpl implements SlotService {
     public List<SlotDto> getAvailableSlotsPerDoctorAndDay(AvailableSlotsRequests requests) {
         User doctor = userService.getDoctorById(requests.getDoctorId());
         WorkTime workTime = workTimeServiceImpl.getWorkTimeForDoctorAndWeekDay(doctor, requests.getDate().getDayOfWeek().name().toLowerCase());
+        if(!Optional.ofNullable(workTime).isPresent()) {
+            return new ArrayList<>();
+        }
         List<Slot> allSlots = new ArrayList<>();
         if(workTime.isParadite()) {
             allSlots = repository.findByParadite(true);
-        } else {
+        } else if (workTime.isPasdite()) {
             allSlots = repository.findByParadite(false);
+        } else {
+            return new ArrayList<>();
         }
 
         List<Slot> busySlots = appointmentRepository.findByDoctorAndDateAndStatusIsNot(doctor, requests.getDate(), AppointmentStatus.DECLINED)
