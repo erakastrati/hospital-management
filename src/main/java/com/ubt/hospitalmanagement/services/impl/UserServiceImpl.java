@@ -26,6 +26,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -40,6 +41,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
 
+    private final PasswordEncoder passwordEncoder;
     private final WorkTimeService workTimeService;
 
     private final AppointmentService appointmentService;
@@ -56,9 +58,10 @@ public class UserServiceImpl implements UserService {
     private String replyToUs;
 
     public void createUser(SignUpRequest request)  {
+        String password = passwordEncoder.encode(request.getPassword());
         createUser(User.builder()
                 .email(request.getEmail())
-                .password(request.getPassword())
+                .password(password)
                 .active(true)
                 .roles(request.isDoctor() ? Roles.DOCTOR.name() : Roles.PATIENT.name())
                 .dateOfBirth(request.getDateOfBirth())

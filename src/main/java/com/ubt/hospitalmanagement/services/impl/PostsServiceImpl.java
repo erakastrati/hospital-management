@@ -18,7 +18,6 @@ import javax.persistence.EntityNotFoundException;
 public class PostsServiceImpl implements PostsService {
 
     private final PostRepository repository;
-    private final UserService userService;
 
     public Page<PostDto> getAllPostsPaginated(Pageable pageable) {
         return repository.findAll(pageable).map(PostMapper::map);
