@@ -21,6 +21,7 @@ public class Posts {
     private String id;
 
     private Integer doctorId;
+    private String author;
 
     private String title;
     private String category;

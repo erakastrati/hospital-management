@@ -15,10 +15,12 @@ import com.ubt.hospitalmanagement.entities.WorkTime;
 import com.ubt.hospitalmanagement.enums.Roles;
 import com.ubt.hospitalmanagement.repositories.UserRepository;
 import com.ubt.hospitalmanagement.services.AppointmentService;
+import com.ubt.hospitalmanagement.services.EmailService;
 import com.ubt.hospitalmanagement.services.UserService;
 import com.ubt.hospitalmanagement.services.WorkTimeService;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.util.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -30,9 +32,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -43,6 +43,17 @@ public class UserServiceImpl implements UserService {
     private final WorkTimeService workTimeService;
 
     private final AppointmentService appointmentService;
+
+    private final EmailService emailService;
+
+    @Value("${spring.sendgrid.appointment-set}")
+    private String setNewAppointmentRequest;
+
+    @Value("${spring.sendgrid.contact-us-template}")
+    private String contactUs;
+
+    @Value("${spring.sendgrid.reply-to}")
+    private String replyToUs;
 
     public void createUser(SignUpRequest request)  {
         createUser(User.builder()
@@ -166,7 +177,20 @@ public class UserServiceImpl implements UserService {
     public AppointmentDto setNewAppointment(AppointmentRequestDto request) throws UserNotFoundException, SlotNotValidException {
         User doctor = repository.findById(request.getDoctorId()).orElseThrow(UserNotFoundException::new);
         User currentPatient = getCurrentUserDetails();
-        return appointmentService.save(request, doctor, currentPatient);
+
+        AppointmentDto appointmentDto = appointmentService.save(request, doctor, currentPatient);
+
+        Map<String, String> templateKeys = new HashMap<>();
+        templateKeys.put("patient_name", currentPatient.getFirstName());
+        templateKeys.put("date", Optional.ofNullable(request.getDate()).map(String::valueOf).orElse(""));
+        templateKeys.put("description", request.getDescription());
+        EmailDTO email = EmailDTO.builder()
+                .toEmail(doctor.getEmail())
+                .templateId(setNewAppointmentRequest)
+                .templateKeys(templateKeys)
+                .build();
+        emailService.sendEmail(email);
+        return appointmentDto;
     }
 
     public Page<AppointmentDto> getCurrentDoctorAppointments(Pageable pageable) {
@@ -206,6 +230,18 @@ public class UserServiceImpl implements UserService {
 
     public void contactUs(ContactUsDto request) {
         // send email to us -TBD
+        Map<String, String> templateKeys = new HashMap<>();
+        templateKeys.put("sender_firstname", request.getFirstName());
+        templateKeys.put("sender_lastname", request.getLastName());
+        templateKeys.put("number", request.getPhoneNumber());
+        templateKeys.put("email", request.getEmail());
+        templateKeys.put("message", request.getMessage());
+        EmailDTO email = EmailDTO.builder()
+                .toEmail(replyToUs)
+                .templateId(contactUs)
+                .templateKeys(templateKeys)
+                .build();
+        emailService.sendEmail(email);
     }
 
     public List<UserDto> getDoctors() {

@@ -17,6 +17,7 @@ public class PostMapper {
                 .title(post.getTitle())
                 .doctorId(post.getDoctorId())
                 .publishDate(post.getPublishDate())
+                .author(post.getAuthor())
                 .build();
     }
 
@@ -28,6 +29,7 @@ public class PostMapper {
                 .title(post.getTitle())
                 .doctorId(post.getDoctorId())
                 .publishDate(post.getPublishDate())
+                .author(post.getAuthor())
                 .build();
     }
 

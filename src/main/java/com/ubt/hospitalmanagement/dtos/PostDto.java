@@ -21,4 +21,5 @@ public class PostDto {
     private String category;
     private String description;
     private LocalDate publishDate;
+    private String author;
 }
